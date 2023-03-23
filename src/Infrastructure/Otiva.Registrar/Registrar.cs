@@ -5,6 +5,7 @@ using Otiva.AppServeces.IRepository;
 using Otiva.AppServeces.MapProfile;
 using Otiva.AppServeces.Service.Ad;
 using Otiva.AppServeces.Service.Category;
+using Otiva.AppServeces.Service.Order;
 using Otiva.AppServeces.Service.Photo;
 using Otiva.AppServeces.Service.SelectedAds;
 using Otiva.AppServeces.Service.Subcategory;
@@ -54,6 +55,9 @@ namespace Otiva.Registrar
 
             services.AddTransient<ISelectedAdsService, SelectedAdsService>();
             services.AddTransient<ISelectedAdsRepository, SelectedAdsRepository>();
+
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddScoped<IClaimAccessor, HttpContextClaimsAccessor>();
 

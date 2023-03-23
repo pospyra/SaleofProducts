@@ -22,8 +22,6 @@ namespace Otiva.Domain
          
         public decimal Price { get; set; }
 
-        public string Region { get; set; }
-
         public Subcategory Subcategory { get; set; }
 
         public User User { get; set; }

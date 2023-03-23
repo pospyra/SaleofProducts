@@ -83,7 +83,6 @@ namespace Otiva.AppServeces.Service.Ad
                      CreateTime = a.CreateTime,
                      UserId= a.UserId,
                      Price = a.Price,
-                     Region = a.Region
                  }).OrderBy(d=>d.CreateTime).Skip(skip).Take(take).ToListAsync();
         }
 
@@ -118,7 +117,6 @@ namespace Otiva.AppServeces.Service.Ad
                 UserId = p.UserId,
                 SubcategoryId = p.SubcategoryId,
                 Description = p.Description,
-                Region = p.Region,
                 Price = p.Price,
                 CreateTime = p.CreateTime
             }).OrderBy(x => x.CreateTime).Skip(search.skip).Take(search.take).ToListAsync();
