@@ -10,6 +10,6 @@ namespace Otiva.Domain
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Subcategory> Subcategories { get; set; }
+        public ICollection<Subcategory>? Subcategories { get; set; }
     }
 }

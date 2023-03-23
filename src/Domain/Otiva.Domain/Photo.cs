@@ -12,8 +12,8 @@ namespace Otiva.Domain
 
         public string KodBase64 { get; set; }
 
-        public Guid? AdId { get; set; }
+        public Guid? ProductId { get; set; }
 
-        public Ad Ad { get; set; }
+        public Product Product { get; set; }
     }
 }

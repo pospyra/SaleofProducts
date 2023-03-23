@@ -29,9 +29,9 @@ namespace Otiva.AppServeces.Service.SelectedAds
         public async Task<InfoSelectedResponse> AddSelectedAsync( Guid AdId, CancellationToken cancellation)
         {
             var userId = await _userService.GetCurrentUserId(cancellation);
-            var selected = new Domain.SelectedAd()
+            var selected = new Domain.ShoppingCart()
             {
-                AdId = AdId,
+                ProductId = AdId,
                 UserId = userId,
             };
             await _selectedadRepository.Add(selected);
@@ -53,8 +53,8 @@ namespace Otiva.AppServeces.Service.SelectedAds
                {
                    Id= a.Id,
                    UserId = a.UserId,
-                   AdId= a.AdId,
-                   DateAdded= a.DateAdded,
+                   AdId= a.ProductId,
+                   DateAdded= a.Created,
                }).OrderBy(x =>x.DateAdded).Skip(skip).Take(take).ToListAsync();
         }
     }

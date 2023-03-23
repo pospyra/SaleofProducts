@@ -38,7 +38,7 @@ namespace Otiva.AppServeces.Service.Photo
         public async Task SetAdPhotoAsync(Guid PhotoId, Guid AdId)
         {
             var photo = await _photoRepository.FindByIdAsync(PhotoId);
-            photo.AdId = AdId;
+            photo.ProductId = AdId;
             await _photoRepository.UpdatePhotoAsync(photo);
         }
     }

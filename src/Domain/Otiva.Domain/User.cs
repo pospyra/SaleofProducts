@@ -29,8 +29,8 @@ namespace Otiva.Domain
         public ICollection<Message> SentMessages { get; set; }
         public ICollection<Message> ReceivedMessages { get; set; }
 
-        public ICollection<Ad> Ads { get; set; }
+        public ICollection<Product> Products { get; set; }
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<SelectedAd> SelectedAds { get; set; }
+        public ICollection<ShoppingCart> SelectedAds { get; set; }
     }
 }

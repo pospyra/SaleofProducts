@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,14 +10,40 @@ namespace Otiva.AppServeces.IRepository
 {
     public interface IAdRepository
     {
-        Task<Ad> FindByIdAsync(Guid id);
+        /// <summary>
+        /// Найти объявление по ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Product> FindByIdAsync(Guid id);
 
-        IQueryable<Ad> GetAll();
+        /// <summary>
+        /// Получить все объявления
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Product> GetAll();
 
-        Task Add(Ad model);
+        /// <summary>
+        /// Добавить объявление
+        /// </summary>
+        /// <param name="model">Модель объявления</param>
+        /// <returns></returns>
+        Task Add(Product model);
 
-        Task DeleteAsync(Ad ad);
+        /// <summary>
+        /// Удалить объявление
+        /// </summary>
+        /// <param name="ad">Модель объявления</param>
+        /// <returns></returns>
+        Task DeleteAsync(Product ad);
 
-        Task EditAdAsync(Ad edit);
+        /// <summary>
+        /// Редактировать объявление
+        /// </summary>
+        /// <param name="edit"></param>
+        /// <returns></returns>
+        Task EditAdAsync(Product edit);
+        public Task<Product> FindWhere(Expression<Func<Product, bool>> predicate);
+
     }
 }

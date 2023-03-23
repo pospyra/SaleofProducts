@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Otiva.DataAccess.EntityConfiguration.Configuration
 {
-    public class AdConfiguraration : IEntityTypeConfiguration<Ad>
+    public class AdConfiguraration : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Ad> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
@@ -19,7 +19,7 @@ namespace Otiva.DataAccess.EntityConfiguration.Configuration
             builder.Property(b => b.Description).HasMaxLength(800);
 
             builder.HasOne(x => x.User)
-                .WithMany(p => p.Ads)
+                .WithMany(p => p.Products)
                 .HasForeignKey(x => x.UserId);
         }
     }

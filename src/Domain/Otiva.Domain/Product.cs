@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Otiva.Domain
 {
-    public class Ad
+    public class Product
     {
         public Guid Id { get; set; }
 

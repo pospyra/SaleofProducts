@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Otiva.Domain
 {
-    public class SelectedAd
+    public class ShoppingCart
     {
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
 
-        public Guid AdId { get; set; }
+        public Guid ProductId { get; set; }
 
-        public DateTime DateAdded { get; set; } = DateTime.UtcNow; 
+        public DateTime Created { get; set; } = DateTime.UtcNow; 
     }
 }

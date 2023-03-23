@@ -11,28 +11,28 @@ namespace Otiva.DataAccess.Repository
 {
     public class SelectedAdsRepository : ISelectedAdsRepository
     {
-        public readonly IBaseRepository<SelectedAd> _baseRepository;
+        public readonly IBaseRepository<ShoppingCart> _baseRepository;
 
-        public SelectedAdsRepository(IBaseRepository<SelectedAd> baseRepository)
+        public SelectedAdsRepository(IBaseRepository<ShoppingCart> baseRepository)
         {
             _baseRepository = baseRepository;
         }
-        public Task Add(SelectedAd model)
+        public Task Add(ShoppingCart model)
         {
             return _baseRepository.AddAsync(model);
         }
 
-        public async Task DeleteAsync(SelectedAd model)
+        public async Task DeleteAsync(ShoppingCart model)
         {
             await _baseRepository.DeleteAsync(model);
         }
 
-        public async Task<SelectedAd> FindByIdAsync(Guid id)
+        public async Task<ShoppingCart> FindByIdAsync(Guid id)
         {
             return await _baseRepository.GetByIdAsync(id);
         }
 
-        public IQueryable<SelectedAd> GetAll()
+        public IQueryable<ShoppingCart> GetAll()
         {
             return _baseRepository.GetAll();
         }

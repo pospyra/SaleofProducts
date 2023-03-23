@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Otiva.Migrations;
@@ -11,9 +12,11 @@ using Otiva.Migrations;
 namespace Otiva.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323135129_changeNemeDomain")]
+    partial class changeNemeDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,16 +77,16 @@ namespace Otiva.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AdId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("KodBase64")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AdId");
 
                     b.ToTable("Photo");
                 });
@@ -161,11 +164,11 @@ namespace Otiva.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("AdId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -183,7 +186,7 @@ namespace Otiva.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -255,11 +258,11 @@ namespace Otiva.Migrations.Migrations
 
             modelBuilder.Entity("Otiva.Domain.Photo", b =>
                 {
-                    b.HasOne("Otiva.Domain.Product", "Product")
+                    b.HasOne("Otiva.Domain.Product", "Ad")
                         .WithMany("Photos")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("AdId");
 
-                    b.Navigation("Product");
+                    b.Navigation("Ad");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Product", b =>
@@ -271,7 +274,7 @@ namespace Otiva.Migrations.Migrations
                         .IsRequired();
 
                     b.HasOne("Otiva.Domain.User", "User")
-                        .WithMany("Products")
+                        .WithMany("Ads")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -305,7 +308,9 @@ namespace Otiva.Migrations.Migrations
                 {
                     b.HasOne("Otiva.Domain.Category", "Category")
                         .WithMany("Subcategories")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -322,7 +327,7 @@ namespace Otiva.Migrations.Migrations
 
             modelBuilder.Entity("Otiva.Domain.User", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Ads");
 
                     b.Navigation("ReceivedMessages");
 

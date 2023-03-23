@@ -5,9 +5,11 @@ using Otiva.AppServeces.IRepository;
 using Otiva.AppServeces.Service.Photo;
 using Otiva.AppServeces.Service.User;
 using Otiva.Contracts.AdDto;
+using Otiva.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace Otiva.AppServeces.Service.Ad
         {
             try
             {
-                var newAd = _mapper.Map<Domain.Ad>(createAd);
+                var newAd = _mapper.Map<Domain.Product>(createAd);
                 newAd.UserId = await _userService.GetCurrentUserId(cancellation);
                 await _adRepository.Add(newAd);
 
@@ -42,7 +44,6 @@ namespace Otiva.AppServeces.Service.Ad
 
                 return newAd.Id;
             }
-
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -109,6 +110,7 @@ namespace Otiva.AppServeces.Service.Ad
             if (search.PriceTo != null)
                 query = query.Where(c => c.Price <= search.PriceTo);
 
+            var res = _adRepository.FindWhere(query => query.Price <= search.PriceTo);
             return await query.Select(p => new InfoAdResponse
             {
                 Id = p.Id,

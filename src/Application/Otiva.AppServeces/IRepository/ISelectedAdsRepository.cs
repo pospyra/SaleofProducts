@@ -9,12 +9,12 @@ namespace Otiva.AppServeces.IRepository
 {
     public interface ISelectedAdsRepository
     {
-        IQueryable<SelectedAd> GetAll();
+        IQueryable<ShoppingCart> GetAll();
 
-        Task Add(SelectedAd model);
+        Task Add(ShoppingCart model);
 
-        Task DeleteAsync(SelectedAd model);
+        Task DeleteAsync(ShoppingCart model);
 
-        Task<SelectedAd> FindByIdAsync(Guid id);
+        Task<ShoppingCart> FindByIdAsync(Guid id);
     }
 }
