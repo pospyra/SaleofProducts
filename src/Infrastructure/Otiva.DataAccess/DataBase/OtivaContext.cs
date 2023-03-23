@@ -21,8 +21,7 @@ namespace Otiva.DataAccess.DataBase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AdConfiguraration());
-            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
-            modelBuilder.ApplyConfiguration(new ChatConfiguration());
+
         }
     }
 }

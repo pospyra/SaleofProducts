@@ -26,11 +26,8 @@ namespace Otiva.Domain
 
         public string? KodBase64 { get; set; }
 
-        public ICollection<Message> SentMessages { get; set; }
-        public ICollection<Message> ReceivedMessages { get; set; }
-
         public ICollection<Product> Products { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+
         public ICollection<ShoppingCart> SelectedAds { get; set; }
     }
 }

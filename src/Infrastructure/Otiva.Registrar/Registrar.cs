@@ -5,9 +5,7 @@ using Otiva.AppServeces.IRepository;
 using Otiva.AppServeces.MapProfile;
 using Otiva.AppServeces.Service.Ad;
 using Otiva.AppServeces.Service.Category;
-using Otiva.AppServeces.Service.Message;
 using Otiva.AppServeces.Service.Photo;
-using Otiva.AppServeces.Service.Review;
 using Otiva.AppServeces.Service.SelectedAds;
 using Otiva.AppServeces.Service.Subcategory;
 using Otiva.AppServeces.Service.User;
@@ -37,7 +35,7 @@ namespace Otiva.Registrar
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddAutoMapper(typeof(UserMapProfile), typeof(AdMapProfile),
-                typeof(CategoryMapProfile), typeof(SubcategoryMapProfile), typeof(ReviewMapProfile), typeof(MessageMapProfile));
+                typeof(CategoryMapProfile), typeof(SubcategoryMapProfile));
 
             services.AddTransient<IAdService, AdService>();
             services.AddTransient<IAdRepository, AdRepository>();
@@ -56,12 +54,6 @@ namespace Otiva.Registrar
 
             services.AddTransient<ISelectedAdsService, SelectedAdsService>();
             services.AddTransient<ISelectedAdsRepository, SelectedAdsRepository>();
-
-            services.AddTransient<IReviewService, ReviewService>();
-            services.AddTransient<IReviewRepository, ReviewRepository>();
-
-            services.AddTransient<IMessageService, MessageService>();
-            services.AddTransient<IMessageRepository, MessageRepository>();
 
             services.AddScoped<IClaimAccessor, HttpContextClaimsAccessor>();
 
