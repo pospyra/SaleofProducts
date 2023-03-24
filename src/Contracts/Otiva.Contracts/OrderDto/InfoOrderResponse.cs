@@ -14,11 +14,6 @@ namespace Otiva.Contracts.OrderDto
         public Guid Id { get; set; }
 
         /// <summary>
-        /// ID коризны товаров
-        /// </summary>
-        public Guid ShoppingCartId { get; set; }
-
-        /// <summary>
         /// ID заказчика
         /// </summary>
         public Guid ClientId { get; set; }

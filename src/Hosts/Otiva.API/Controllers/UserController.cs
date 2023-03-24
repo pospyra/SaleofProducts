@@ -8,7 +8,7 @@ using System.Net;
 
 namespace Otiva.API.Controllers
 {
-    [ApiController]
+
     public class UserController : ControllerBase
     {
         public readonly IUserService _userService;
@@ -45,7 +45,7 @@ namespace Otiva.API.Controllers
 
         [HttpPost("login")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoUserResponse>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login(LoginRequest userLogin)
+        public async Task<IActionResult> Login([FromBody]LoginRequest userLogin)
         {
             var token = await _userService.Login(userLogin);
 
@@ -54,7 +54,7 @@ namespace Otiva.API.Controllers
 
         [HttpPost("/registration")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoUserResponse>), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> Registration(RegistrationOrUpdateRequest registration, IFormFile file)
+        public async Task<IActionResult> Registration([FromBody]RegistrationOrUpdateRequest registration, IFormFile file)
         {
             byte[] photo = null;
             if (file != null)

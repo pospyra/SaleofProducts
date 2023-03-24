@@ -24,16 +24,19 @@ namespace Otiva.AppServeces.Service.User
         public readonly IUserRepository _userRepository;
         private readonly IClaimAccessor _claimAccessor;
         public readonly IMapper _mapper;
+        public readonly IShoppingCartRepository _shoppingCartRepository;
         public UserService(
             IUserRepository userRepository, 
             IMapper mapper,
             IConfiguration configuration, 
-            IClaimAccessor claimAccessor)
+            IClaimAccessor claimAccessor,
+            IShoppingCartRepository shoppingCartRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _configuration = configuration;
             _claimAccessor = claimAccessor;
+            _shoppingCartRepository = shoppingCartRepository;
         }
 
         public async Task DeleteAsync(Guid id)
@@ -170,6 +173,8 @@ namespace Otiva.AppServeces.Service.User
             }         
 
             await _userRepository.Add(registerAcc);
+
+            var newCart = _shoppingCartRepository.CreateShoppingCart(registerAcc.Id);
             return registerAcc.Id;
         }
     }

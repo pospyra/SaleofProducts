@@ -11,8 +11,6 @@ namespace Otiva.AppServeces.Service.Ad
     {
         Task<InfoAdResponse> GetByIdAsync(Guid id);
 
-        Task<IReadOnlyCollection<InfoAdResponse>> GetMyAdsAsync(int take, int skip, CancellationToken cancellation);
-
         Task<Guid> CreateAdAsync(CreateOrUpdateAdRequest createAd, CancellationToken cancellation);
 
         Task<IReadOnlyCollection<InfoAdResponse>> GetAllAsync( int take, int skip);

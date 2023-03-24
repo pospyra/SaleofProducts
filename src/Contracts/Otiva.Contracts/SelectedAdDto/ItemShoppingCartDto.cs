@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Otiva.Domain
+namespace Otiva.Contracts.SelectedAdDto
 {
-    public class ShoppingCart
+    public class ItemShoppingCartDto
     {
         public Guid Id { get; set; }
+
         public Guid UserId { get; set; }
 
-        public List<ItemShoppingCart> ItemShoppingCarts { get; set; } = new List<ItemShoppingCart>();
+        public Guid AdId { get; set; }
 
-        public User User { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }

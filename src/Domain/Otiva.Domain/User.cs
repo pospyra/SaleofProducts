@@ -26,8 +26,7 @@ namespace Otiva.Domain
 
         public string? KodBase64 { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
 
-        public ICollection<ShoppingCart> SelectedAds { get; set; }
     }
 }

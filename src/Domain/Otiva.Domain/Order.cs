@@ -14,11 +14,6 @@ namespace Otiva.Domain
         public Guid Id { get; set; }
 
         /// <summary>
-        /// ID коризны товаров
-        /// </summary>
-        public Guid ShoppingCartId { get; set; }
-
-        /// <summary>
         /// ID заказчика
         /// </summary>
         public Guid ClientId { get; set; }
@@ -47,5 +42,10 @@ namespace Otiva.Domain
         /// ДатаВремя выдачи заказа
         /// </summary>
         public DateTime? IssueDateTime { get; set; }
+
+        public ICollection<ItemShoppingCart> ItemsShoppingCart { get; set; }
+
+        public User Client { get; set; }
+
     }
 }

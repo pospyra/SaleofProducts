@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Otiva.Migrations;
@@ -11,9 +12,11 @@ using Otiva.Migrations;
 namespace Otiva.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230324111655_changeDomain")]
+    partial class changeDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,16 +55,14 @@ namespace Otiva.Migrations.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ShoppingCartId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ShoppingCartId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ItemShoppingCart");
                 });
@@ -93,7 +94,8 @@ namespace Otiva.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId")
+                        .IsUnique();
 
                     b.ToTable("Order");
                 });
@@ -142,28 +144,16 @@ namespace Otiva.Migrations.Migrations
                     b.Property<Guid>("SubcategoryId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubcategoryId");
-
-                    b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Otiva.Domain.ShoppingCart", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("SubcategoryId");
 
-                    b.ToTable("ShoppingCart");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Subcategory", b =>
@@ -225,34 +215,24 @@ namespace Otiva.Migrations.Migrations
 
             modelBuilder.Entity("Otiva.Domain.ItemShoppingCart", b =>
                 {
-                    b.HasOne("Otiva.Domain.Order", "Order")
+                    b.HasOne("Otiva.Domain.Order", null)
                         .WithMany("ItemsShoppingCart")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("Otiva.Domain.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                    b.HasOne("Otiva.Domain.User", "User")
+                        .WithMany("ItemSelectedAds")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Otiva.Domain.ShoppingCart", "ShoppingCart")
-                        .WithMany("ItemShoppingCarts")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Order", b =>
                 {
                     b.HasOne("Otiva.Domain.User", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
+                        .WithOne("Order")
+                        .HasForeignKey("Otiva.Domain.Order", "ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -276,16 +256,13 @@ namespace Otiva.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subcategory");
-                });
-
-            modelBuilder.Entity("Otiva.Domain.ShoppingCart", b =>
-                {
                     b.HasOne("Otiva.Domain.User", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("Otiva.Domain.ShoppingCart", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Subcategory");
 
                     b.Navigation("User");
                 });
@@ -314,14 +291,11 @@ namespace Otiva.Migrations.Migrations
                     b.Navigation("Photos");
                 });
 
-            modelBuilder.Entity("Otiva.Domain.ShoppingCart", b =>
-                {
-                    b.Navigation("ItemShoppingCarts");
-                });
-
             modelBuilder.Entity("Otiva.Domain.User", b =>
                 {
-                    b.Navigation("ShoppingCart")
+                    b.Navigation("ItemSelectedAds");
+
+                    b.Navigation("Order")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -34,7 +34,6 @@ namespace Otiva.AppServeces.Service.Ad
             try
             {
                 var newAd = _mapper.Map<Domain.Product>(createAd);
-                newAd.UserId = await _userService.GetCurrentUserId(cancellation);
                 await _adRepository.Add(newAd);
 
                 foreach(var photoId in createAd.PhotoId)
@@ -81,7 +80,6 @@ namespace Otiva.AppServeces.Service.Ad
                      Description = a.Description,
                      SubcategoryId = a.SubcategoryId,
                      CreateTime = a.CreateTime,
-                     UserId= a.UserId,
                      Price = a.Price,
                  }).OrderBy(d=>d.CreateTime).Skip(skip).Take(take).ToListAsync();
         }
@@ -100,9 +98,6 @@ namespace Otiva.AppServeces.Service.Ad
             if (search.SubcategoryId.HasValue)
                 query = query.Where(c => c.SubcategoryId == search.SubcategoryId);
 
-            if(search.UserId.HasValue)
-                query = query.Where(c => c.UserId == search.UserId);
-
             if (search.PriceFrom != null)
                 query = query.Where(c => c.Price >= search.PriceFrom);
 
@@ -114,7 +109,6 @@ namespace Otiva.AppServeces.Service.Ad
             {
                 Id = p.Id,
                 Name = p.Name,
-                UserId = p.UserId,
                 SubcategoryId = p.SubcategoryId,
                 Description = p.Description,
                 Price = p.Price,
@@ -130,21 +124,5 @@ namespace Otiva.AppServeces.Service.Ad
             return _mapper.Map<InfoAdResponse>(exitAd);
         }
 
-        public async Task<IReadOnlyCollection<InfoAdResponse>> GetMyAdsAsync(int take, int skip, CancellationToken cancellation)
-        {
-            var currentUser = await _userService.GetCurrentUserId(cancellation);
-
-            return await _adRepository.GetAll()
-                .Where(p=>p.UserId == currentUser)
-                .Select(a => new InfoAdResponse
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Description = a.Description,
-                    SubcategoryId = a.SubcategoryId,
-                    CreateTime = a.CreateTime,
-                    UserId = a.UserId,
-                }).OrderBy(d => d.CreateTime).Skip(skip).Take(take).ToListAsync();
-        }
     }
 }

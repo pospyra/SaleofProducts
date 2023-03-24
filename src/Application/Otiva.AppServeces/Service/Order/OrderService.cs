@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Otiva.AppServeces.IRepository;
 using Otiva.AppServeces.Service.Photo;
+using Otiva.AppServeces.Service.ShoppingCart;
 using Otiva.AppServeces.Service.User;
 using Otiva.Contracts.AdDto;
 using Otiva.Contracts.OrderDto;
@@ -22,11 +23,19 @@ namespace Otiva.AppServeces.Service.Order
         public readonly IOrderRepository _ordreRepository;
         public readonly IUserService _userService;
         public readonly IMapper _mapper;
-        public OrderService(IOrderRepository ordreRepository, IMapper mapper, IUserService userService)
+        public readonly IItemCartRepository _selectedAdsRepository;
+        public readonly IShoppingCartService _cartService;
+        public OrderService(IOrderRepository ordreRepository,
+            IMapper mapper,
+            IUserService userService,
+            IShoppingCartService cartService,
+            IItemCartRepository selectedAdsRepository)
         {
             _ordreRepository = ordreRepository;
             _mapper = mapper;
             _userService = userService;
+            _cartService = cartService;
+            _selectedAdsRepository = selectedAdsRepository;
         }
 
 
@@ -43,7 +52,6 @@ namespace Otiva.AppServeces.Service.Order
             {
                 Id = order.Id,
                 ClientId = order.ClientId,
-                ShoppingCartId = order.ShoppingCartId,
                 CourierId = order.CourierId,
                 DeliveryAddress = order.DeliveryAddress,
                 TotalPrice = order.TotalPrice,
@@ -54,14 +62,18 @@ namespace Otiva.AppServeces.Service.Order
 
         public async Task<Guid> Order(CreateOrderRequest createOrder, CancellationToken cancellation)
         {
+            var curentUser = await _userService.GetCurrentUserId(cancellation);
+            var shoppingCartID = await _cartService.GetCartByCurrentUser(cancellation);
             var newOrder = new Domain.Order()
             {
-                ShoppingCartId = createOrder.ShoppingCartId,
-                ClientId = await _userService.GetCurrentUserId(cancellation),
+                ClientId = curentUser,
                 CourierId = createOrder.CourierId,
                 DeliveryAddress = createOrder.DeliveryAddress,
+                ItemsShoppingCart = await _selectedAdsRepository.GetAll()
+                .Where(x => x.ShoppingCartId == shoppingCartID).ToListAsync()
             };
-           await  _ordreRepository.Add(newOrder);
+
+            await _ordreRepository.Add(newOrder);
 
             return newOrder.Id;
         }

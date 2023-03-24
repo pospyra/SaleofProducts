@@ -9,14 +9,17 @@ using System.Threading.Tasks;
 
 namespace Otiva.DataAccess.EntityConfiguration.Configuration
 {
-    public class AdConfiguraration : IEntityTypeConfiguration<Product>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
 
-            builder.Property(b => b.Description).HasMaxLength(800);
+            builder.HasOne(c => c.ShoppingCart)
+                    .WithOne(cd => cd.User)
+                    .HasForeignKey<ShoppingCart>(x => x.UserId);
+
         }
     }
 }

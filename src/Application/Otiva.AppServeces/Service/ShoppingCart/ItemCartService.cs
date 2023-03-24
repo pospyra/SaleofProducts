@@ -11,28 +11,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Otiva.AppServeces.Service.SelectedAds
+namespace Otiva.AppServeces.Service.ShoppingCart
 {
-    public class SelectedAdsService : ISelectedAdsService
+    public class ItemCartService : IItemCartService
     {
-        public readonly ISelectedAdsRepository _selectedadRepository;
-        public readonly IUserService _userService; 
+        public readonly IItemCartRepository _selectedadRepository;
+        public readonly IUserService _userService;
+        public readonly IShoppingCartService _cartService;
         public readonly IMapper _mapper;
-        public SelectedAdsService(ISelectedAdsRepository selectedadRepository, IMapper mapper, IUserService userService)
+        public ItemCartService(IItemCartRepository selectedadRepository,
+            IMapper mapper,
+            IUserService userService,
+          IShoppingCartService cartService)
         {
             _selectedadRepository = selectedadRepository;
             _userService = userService;
             _mapper = mapper;
+            _cartService = cartService;
         }
 
 
         public async Task<InfoSelectedResponse> AddSelectedAsync( Guid AdId, CancellationToken cancellation)
         {
-            var userId = await _userService.GetCurrentUserId(cancellation);
-            var selected = new Domain.ShoppingCart()
+            var shoppingCartID = await _cartService.GetCartByCurrentUser(cancellation);
+
+            var selected = new Domain.ItemShoppingCart()
             {
                 ProductId = AdId,
-                UserId = userId,
+                ShoppingCartId = shoppingCartID,
             };
             await _selectedadRepository.Add(selected);
 
@@ -45,14 +51,15 @@ namespace Otiva.AppServeces.Service.SelectedAds
             await _selectedadRepository.DeleteAsync(selectedDel);
         }
 
-        public async Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip)
+        public async Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip, CancellationToken cancellation)
         {
+            var shoppingCartID = await _cartService.GetCartByCurrentUser(cancellation);
+
             return await _selectedadRepository.GetAll()
-               .Where(x => x.UserId == UserId)
+               //.Where(x => x.ShoppingCartId == shoppingCartID)
                .Select(a=> new InfoSelectedResponse()
                {
                    Id= a.Id,
-                   UserId = a.UserId,
                    AdId= a.ProductId,
                    DateAdded= a.Created,
                }).OrderBy(x =>x.DateAdded).Skip(skip).Take(take).ToListAsync();

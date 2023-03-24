@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Otiva.AppServeces.Service.Ad;
 using Otiva.AppServeces.Service.Order;
-using Otiva.AppServeces.Service.SelectedAds;
+using Otiva.AppServeces.Service;
 using Otiva.Contracts.AdDto;
 using Otiva.Contracts.OrderDto;
 using Otiva.Contracts.SelectedAdDto;
@@ -18,7 +18,7 @@ namespace Otiva.API.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet("/getOrder{Id}")]
+        [HttpGet("/getOrder{OrderId}")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoSelectedResponse>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAll(Guid OrderId)
         {

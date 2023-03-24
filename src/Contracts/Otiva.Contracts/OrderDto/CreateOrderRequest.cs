@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Otiva.Contracts.SelectedAdDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,6 @@ namespace Otiva.Contracts.OrderDto
 {
     public class CreateOrderRequest
     {
-        /// <summary>
-        /// ID коризны товаров
-        /// </summary>
-        public Guid ShoppingCartId { get; set; }
 
         /// <summary>
         /// ID курьера
@@ -22,11 +19,6 @@ namespace Otiva.Contracts.OrderDto
         /// Адрес доставки
         /// </summary>
         public string DeliveryAddress { get; set; }
-
-        /// <summary>
-        /// ДатаВремя выдачи заказа
-        /// </summary>
-        public DateTime IssueDateTime { get; set; }
 
     }
 }

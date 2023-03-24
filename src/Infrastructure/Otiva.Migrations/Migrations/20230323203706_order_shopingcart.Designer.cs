@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Otiva.Migrations;
@@ -11,9 +12,11 @@ using Otiva.Migrations;
 namespace Otiva.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323203706_order_shopingcart")]
+    partial class order_shopingcart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,35 +38,6 @@ namespace Otiva.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Otiva.Domain.ItemShoppingCart", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ShoppingCartId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("ItemShoppingCart");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Order", b =>
@@ -88,12 +62,19 @@ namespace Otiva.Migrations.Migrations
                     b.Property<DateTime>("OrderDateTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("ShoppingCartId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal?>("TotalPrice")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
+                    b.HasIndex("ShoppingCartId")
+                        .IsUnique();
 
                     b.ToTable("Order");
                 });
@@ -142,9 +123,14 @@ namespace Otiva.Migrations.Migrations
                     b.Property<Guid>("SubcategoryId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SubcategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Product");
                 });
@@ -155,13 +141,18 @@ namespace Otiva.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCart");
                 });
@@ -223,40 +214,23 @@ namespace Otiva.Migrations.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Otiva.Domain.ItemShoppingCart", b =>
+            modelBuilder.Entity("Otiva.Domain.Order", b =>
                 {
-                    b.HasOne("Otiva.Domain.Order", "Order")
-                        .WithMany("ItemsShoppingCart")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Otiva.Domain.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                    b.HasOne("Otiva.Domain.User", "Client")
+                        .WithOne("Order")
+                        .HasForeignKey("Otiva.Domain.Order", "ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Otiva.Domain.ShoppingCart", "ShoppingCart")
-                        .WithMany("ItemShoppingCarts")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("Otiva.Domain.Order", b =>
-                {
-                    b.HasOne("Otiva.Domain.User", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
+                        .WithOne("Order")
+                        .HasForeignKey("Otiva.Domain.Order", "ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("ShoppingCart");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Photo", b =>
@@ -276,18 +250,24 @@ namespace Otiva.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Otiva.Domain.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Subcategory");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Otiva.Domain.ShoppingCart", b =>
                 {
-                    b.HasOne("Otiva.Domain.User", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("Otiva.Domain.ShoppingCart", "UserId")
+                    b.HasOne("Otiva.Domain.User", null)
+                        .WithMany("SelectedAds")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Otiva.Domain.Subcategory", b =>
@@ -304,11 +284,6 @@ namespace Otiva.Migrations.Migrations
                     b.Navigation("Subcategories");
                 });
 
-            modelBuilder.Entity("Otiva.Domain.Order", b =>
-                {
-                    b.Navigation("ItemsShoppingCart");
-                });
-
             modelBuilder.Entity("Otiva.Domain.Product", b =>
                 {
                     b.Navigation("Photos");
@@ -316,13 +291,18 @@ namespace Otiva.Migrations.Migrations
 
             modelBuilder.Entity("Otiva.Domain.ShoppingCart", b =>
                 {
-                    b.Navigation("ItemShoppingCarts");
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Otiva.Domain.User", b =>
                 {
-                    b.Navigation("ShoppingCart")
+                    b.Navigation("Order")
                         .IsRequired();
+
+                    b.Navigation("Products");
+
+                    b.Navigation("SelectedAds");
                 });
 #pragma warning restore 612, 618
         }

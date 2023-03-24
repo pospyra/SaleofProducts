@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace Otiva.DataAccess.Repository
 {
-    public class SelectedAdsRepository : ISelectedAdsRepository
+    public class ItemCartRepository : IItemCartRepository
     {
-        public readonly IBaseRepository<ShoppingCart> _baseRepository;
+        public readonly IBaseRepository<ItemShoppingCart> _baseRepository;
 
-        public SelectedAdsRepository(IBaseRepository<ShoppingCart> baseRepository)
+        public ItemCartRepository(IBaseRepository<ItemShoppingCart> baseRepository)
         {
             _baseRepository = baseRepository;
         }
-        public Task Add(ShoppingCart model)
+        public Task Add(ItemShoppingCart model)
         {
             return _baseRepository.AddAsync(model);
         }
 
-        public async Task DeleteAsync(ShoppingCart model)
+        public async Task DeleteAsync(ItemShoppingCart model)
         {
             await _baseRepository.DeleteAsync(model);
         }
 
-        public async Task<ShoppingCart> FindByIdAsync(Guid id)
+        public async Task<ItemShoppingCart> FindByIdAsync(Guid id)
         {
             return await _baseRepository.GetByIdAsync(id);
         }
 
-        public IQueryable<ShoppingCart> GetAll()
+        public IQueryable<ItemShoppingCart> GetAll()
         {
             return _baseRepository.GetAll();
         }

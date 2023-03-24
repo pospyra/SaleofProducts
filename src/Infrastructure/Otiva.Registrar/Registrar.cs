@@ -7,7 +7,8 @@ using Otiva.AppServeces.Service.Ad;
 using Otiva.AppServeces.Service.Category;
 using Otiva.AppServeces.Service.Order;
 using Otiva.AppServeces.Service.Photo;
-using Otiva.AppServeces.Service.SelectedAds;
+using Otiva.AppServeces.Service;
+using Otiva.AppServeces.Service.ShoppingCart;
 using Otiva.AppServeces.Service.Subcategory;
 using Otiva.AppServeces.Service.User;
 using Otiva.DataAccess.DataBase;
@@ -53,8 +54,12 @@ namespace Otiva.Registrar
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
 
-            services.AddTransient<ISelectedAdsService, SelectedAdsService>();
-            services.AddTransient<ISelectedAdsRepository, SelectedAdsRepository>();
+            services.AddTransient<IItemCartService, ItemCartService>();
+            services.AddTransient<IItemCartRepository, ItemCartRepository>();
+
+
+            services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
 
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IOrderRepository, OrderRepository>();

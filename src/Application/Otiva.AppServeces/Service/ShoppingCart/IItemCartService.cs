@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Otiva.AppServeces.Service.SelectedAds
+namespace Otiva.AppServeces.Service.ShoppingCart
 {
-    public interface ISelectedAdsService
+    public interface IItemCartService
     {
         Task<InfoSelectedResponse> AddSelectedAsync (Guid AdId, CancellationToken cancellation);
 
-        Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip);
+        Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip, CancellationToken cancellation);
 
         Task DeleteAsync(Guid Id);
     }
