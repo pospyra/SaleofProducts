@@ -11,11 +11,6 @@ namespace Otiva.Contracts.OrderDto
     {
 
         /// <summary>
-        /// ID курьера
-        /// </summary>
-        public Guid CourierId { get; set; }
-
-        /// <summary>
         /// Адрес доставки
         /// </summary>
         public string DeliveryAddress { get; set; }

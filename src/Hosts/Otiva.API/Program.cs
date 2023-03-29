@@ -29,6 +29,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(builder => builder.WithOrigins("http://localhost:4040").AllowAnyMethod().AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("http://salessssssssssssssssssss.site").AllowAnyMethod().AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("http://192.168.0.92").AllowAnyMethod().AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("http://192.168.0.92/").AllowAnyMethod().AllowAnyHeader());
+
 
 app.UseAuthentication();
 app.UseAuthorization();

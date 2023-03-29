@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otiva.Contracts", "src\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Otiva.Infrastructure", "src\Infrastructure\Otiva.Infrastructure\Otiva.Infrastructure.csproj", "{0D4AEBAA-1379-46B3-B59B-4291C7D661B5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{09F656A4-DF54-436B-81F6-BE9F214D326E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "src\Tests\TestProject1\TestProject1.csproj", "{240029F4-A3CE-4123-B05F-0C02C9FA3C12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,10 @@ Global
 		{0D4AEBAA-1379-46B3-B59B-4291C7D661B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D4AEBAA-1379-46B3-B59B-4291C7D661B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D4AEBAA-1379-46B3-B59B-4291C7D661B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240029F4-A3CE-4123-B05F-0C02C9FA3C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240029F4-A3CE-4123-B05F-0C02C9FA3C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240029F4-A3CE-4123-B05F-0C02C9FA3C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240029F4-A3CE-4123-B05F-0C02C9FA3C12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,8 @@ Global
 		{D943945A-BDD5-476C-ABBD-9DAEA710F4CE} = {C0782A95-607C-423C-A6DD-4C5E99CA9575}
 		{21AB32E0-E53C-42EA-A232-0D2445599472} = {5B5D5483-B030-42C9-8B9A-9733835651FA}
 		{0D4AEBAA-1379-46B3-B59B-4291C7D661B5} = {C0782A95-607C-423C-A6DD-4C5E99CA9575}
+		{09F656A4-DF54-436B-81F6-BE9F214D326E} = {23607F25-4672-4F2E-B86F-49BADFBC946F}
+		{240029F4-A3CE-4123-B05F-0C02C9FA3C12} = {09F656A4-DF54-436B-81F6-BE9F214D326E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E07873DF-AF96-4A26-B153-D77AE689A348}

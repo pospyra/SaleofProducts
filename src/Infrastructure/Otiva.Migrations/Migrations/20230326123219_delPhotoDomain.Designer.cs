@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Otiva.Migrations;
@@ -11,9 +12,11 @@ using Otiva.Migrations;
 namespace Otiva.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230326123219_delPhotoDomain")]
+    partial class delPhotoDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,6 +116,7 @@ namespace Otiva.Migrations.Migrations
                         .HasColumnType("character varying(800)");
 
                     b.Property<string>("KodBase64")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")

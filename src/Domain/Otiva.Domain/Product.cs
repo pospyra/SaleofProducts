@@ -20,11 +20,9 @@ namespace Otiva.Domain
 
         public decimal Price { get; set; }
 
-       // public Guid OrderId { get; set; }
-
+        public string? KodBase64 { get; set; }
 
         public Subcategory Subcategory { get; set; }
-       // public Order Order { get; set; }
-        public ICollection<Photo> Photos { get; set; }
+
     }
 }

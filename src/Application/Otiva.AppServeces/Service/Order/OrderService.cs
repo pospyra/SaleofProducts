@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Otiva.AppServeces.IRepository;
-using Otiva.AppServeces.Service.Photo;
 using Otiva.AppServeces.Service.ShoppingCart;
 using Otiva.AppServeces.Service.User;
 using Otiva.Contracts.AdDto;
@@ -67,7 +66,7 @@ namespace Otiva.AppServeces.Service.Order
             var newOrder = new Domain.Order()
             {
                 ClientId = curentUser,
-                CourierId = createOrder.CourierId,
+               // CourierId = createOrder.CourierId,
                 DeliveryAddress = createOrder.DeliveryAddress,
                 ItemsShoppingCart = await _selectedAdsRepository.GetAll()
                 .Where(x => x.ShoppingCartId == shoppingCartID).ToListAsync()

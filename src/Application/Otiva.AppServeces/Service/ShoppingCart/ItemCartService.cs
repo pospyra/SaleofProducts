@@ -35,6 +35,10 @@ namespace Otiva.AppServeces.Service.ShoppingCart
         {
             var shoppingCartID = await _cartService.GetCartByCurrentUser(cancellation);
 
+
+            if (cancellation.IsCancellationRequested)
+                cancellation.ThrowIfCancellationRequested();
+            
             var selected = new Domain.ItemShoppingCart()
             {
                 ProductId = AdId,
@@ -51,12 +55,12 @@ namespace Otiva.AppServeces.Service.ShoppingCart
             await _selectedadRepository.DeleteAsync(selectedDel);
         }
 
-        public async Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip, CancellationToken cancellation)
+        public async Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(int take, int skip, CancellationToken cancellation)
         {
             var shoppingCartID = await _cartService.GetCartByCurrentUser(cancellation);
 
             return await _selectedadRepository.GetAll()
-               //.Where(x => x.ShoppingCartId == shoppingCartID)
+               .Where(x => x.ShoppingCartId == shoppingCartID)
                .Select(a=> new InfoSelectedResponse()
                {
                    Id= a.Id,

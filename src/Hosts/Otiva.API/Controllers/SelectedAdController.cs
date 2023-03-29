@@ -17,11 +17,11 @@ namespace Otiva.API.Controllers
             _itemService = itemService;
         }
 
-        [HttpGet("/allSelectedByUserID{UserId}")]
+        [HttpGet("/allSelectedByUserID")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoSelectedResponse>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll(Guid UserId, int take, int skip, CancellationToken cancellation)
+        public async Task<IActionResult> GetAll( int take, int skip, CancellationToken cancellation)
         {
-            var result = await _itemService.GetSelectedUsersAsync(UserId, take, skip, cancellation);
+            var result = await _itemService.GetSelectedUsersAsync( take, skip, cancellation);
 
             return Ok(result);
         }

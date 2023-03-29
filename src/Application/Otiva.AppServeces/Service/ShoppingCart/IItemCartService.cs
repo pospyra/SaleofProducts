@@ -13,7 +13,7 @@ namespace Otiva.AppServeces.Service.ShoppingCart
     {
         Task<InfoSelectedResponse> AddSelectedAsync (Guid AdId, CancellationToken cancellation);
 
-        Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync(Guid UserId, int take, int skip, CancellationToken cancellation);
+        Task<IReadOnlyCollection<InfoSelectedResponse>> GetSelectedUsersAsync( int take, int skip, CancellationToken cancellation);
 
         Task DeleteAsync(Guid Id);
     }

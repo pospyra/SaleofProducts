@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Otiva.AppServeces.IRepository;
-using Otiva.AppServeces.Service.Photo;
 using Otiva.AppServeces.Service.User;
 using Otiva.Contracts.AdDto;
 using Otiva.Domain;
@@ -19,27 +18,28 @@ namespace Otiva.AppServeces.Service.Ad
     {
         public readonly IAdRepository _adRepository;
         public readonly IUserService _userService;
-        public readonly IPhotoService _photoService;
         public readonly IMapper _mapper;
-        public AdService(IAdRepository adRepository, IPhotoService photoService, IMapper mapper, IUserService userService)
+        public AdService(IAdRepository adRepository,  IMapper mapper, IUserService userService)
         {
-            _photoService = photoService;
             _adRepository = adRepository;
             _mapper = mapper;
             _userService = userService;
         }
 
-        public async Task<Guid> CreateAdAsync(CreateOrUpdateAdRequest createAd, CancellationToken cancellation)
+        public async Task<Guid> CreateAdAsync(CreateOrUpdateAdRequest createAd, CancellationToken cancellation, byte[] photo)
         {
             try
             {
                 var newAd = _mapper.Map<Domain.Product>(createAd);
-                await _adRepository.Add(newAd);
 
-                foreach(var photoId in createAd.PhotoId)
+                if (photo != null)
                 {
-                    await _photoService.SetAdPhotoAsync(photoId, newAd.Id);
+                    if (photo.Length > 5242880)
+                        throw new Exception("Слишклм большой размер фото");
+                    newAd.KodBase64 = Convert.ToBase64String(photo, 0, photo.Length);
                 }
+
+                await _adRepository.Add(newAd);
 
                 return newAd.Id;
             }
@@ -64,7 +64,11 @@ namespace Otiva.AppServeces.Service.Ad
             if (existingAd == null)
                 throw new Exception("Объявления с таким идентификатором не сущесвует");
 
-            await _adRepository.EditAdAsync(_mapper.Map(editAd, existingAd));
+            existingAd.Name = editAd.Name;
+            existingAd.Description = editAd.Description;
+            existingAd.Price = editAd.Price;
+            existingAd.KodBase64 = editAd.KodBase64;
+            await _adRepository.EditAdAsync(existingAd);
 
             return _mapper.Map<InfoAdResponse>(editAd);
 
@@ -81,6 +85,7 @@ namespace Otiva.AppServeces.Service.Ad
                      SubcategoryId = a.SubcategoryId,
                      CreateTime = a.CreateTime,
                      Price = a.Price,
+                     KodBase64 = a.KodBase64,
                  }).OrderBy(d=>d.CreateTime).Skip(skip).Take(take).ToListAsync();
         }
 
@@ -88,8 +93,8 @@ namespace Otiva.AppServeces.Service.Ad
         {
             var query = _adRepository.GetAll();
 
-            if (search == null)
-                throw new Exception("Не задан фильтр");
+            //if (search == null)
+            //    throw new Exception("Не задан фильтр");
 
 
             if (!string.IsNullOrEmpty(search.Name))
@@ -104,7 +109,7 @@ namespace Otiva.AppServeces.Service.Ad
             if (search.PriceTo != null)
                 query = query.Where(c => c.Price <= search.PriceTo);
 
-            var res = _adRepository.FindWhere(query => query.Price <= search.PriceTo);
+           // var res = _adRepository.FindWhere(query => query.Price <= search.PriceTo);
             return await query.Select(p => new InfoAdResponse
             {
                 Id = p.Id,
@@ -112,6 +117,7 @@ namespace Otiva.AppServeces.Service.Ad
                 SubcategoryId = p.SubcategoryId,
                 Description = p.Description,
                 Price = p.Price,
+                KodBase64 = p.KodBase64,
                 CreateTime = p.CreateTime
             }).OrderBy(x => x.CreateTime).Skip(search.skip).Take(search.take).ToListAsync();
         }

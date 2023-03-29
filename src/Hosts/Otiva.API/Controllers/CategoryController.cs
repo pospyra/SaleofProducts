@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Otiva.AppServeces.Service.Category;
 using Otiva.Contracts.CategoryDto;
+using Otiva.Domain;
 using System.Net;
 
 namespace Otiva.API.Controllers

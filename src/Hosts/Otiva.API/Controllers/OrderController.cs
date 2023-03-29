@@ -30,7 +30,7 @@ namespace Otiva.API.Controllers
 
         [HttpPost("order/add")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoSelectedResponse>), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateAdAsync(CreateOrderRequest createOrder, CancellationToken cancellation)
+        public async Task<IActionResult> CreateAdAsync([FromQuery]CreateOrderRequest createOrder, CancellationToken cancellation)
         {
             var result = await _orderService.Order(createOrder, cancellation);
 

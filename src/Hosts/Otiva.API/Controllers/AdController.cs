@@ -37,7 +37,7 @@ namespace Otiva.API.Controllers
 
         [HttpGet("/ad/filter")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoAdResponse>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetByFilter([FromQuery] SearchFilterAd query)
+        public async Task<IActionResult> GetByFilter( SearchFilterAd query)
         {
             if (query.skip < 0 || query.take <= 0 || query.take == null)
                 throw new Exception("Некорректные данные. Убедитесь, что skip >= 0, take > 0 и !null ");
@@ -49,9 +49,20 @@ namespace Otiva.API.Controllers
 
         [HttpPost("ad/createAd")]
         [ProducesResponseType(typeof(IReadOnlyCollection<InfoAdResponse>), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateAdAsync(CreateOrUpdateAdRequest createAd, CancellationToken cancellation)
+        public async Task<IActionResult> CreateAdAsync(CreateOrUpdateAdRequest createAd, IFormFile file, CancellationToken cancellation)
         {
-            var result = await _adService.CreateAdAsync(createAd, cancellation);
+            byte[] photo = null;
+            if (file != null)
+            {
+                await using (var ms = new MemoryStream())
+                await using (var fs = file.OpenReadStream())
+                {
+                    await fs.CopyToAsync(ms);
+                    photo = ms.ToArray();
+                }
+            }
+
+            var result = await _adService.CreateAdAsync(createAd, cancellation, photo);
 
             return Created("", result);
         }
